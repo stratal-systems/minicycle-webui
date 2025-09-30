@@ -92,7 +92,11 @@ fn ResultNetErr() -> impl IntoView {
 }
 
 #[component]
-fn ResultLoaded(report: Report) -> impl IntoView {
+fn ResultLoaded(
+        report: Report,
+        #[prop(into)]
+        viewer_sig: WriteSignal<bool>,
+    ) -> impl IntoView {
     view! {
         <ul>
             <li> "Started: " <VersatileTime unixtime=report.start.time /> </li>
@@ -103,6 +107,11 @@ fn ResultLoaded(report: Report) -> impl IntoView {
             } </li>
             <li> "Commit message: " { report.message } </li>
             <li> "Commit ref: " { report.r#ref } </li>
+            <li> "Artifact ID: " { report.artifacts } </li>
+            <button on:click = move |_| { viewer_sig.set(true); }>
+                "foo "
+            </button>
+
         </ul>
     }
 }
@@ -129,12 +138,14 @@ fn VersatileTime(unixtime: u64) -> impl IntoView {
 #[component]
 fn ReportDisplay(
     #[prop(into)]
-    report: Option<Result<Report, APIErr>>
+    report: Option<Result<Report, APIErr>>,
+    #[prop(into)]
+    viewer_sig: WriteSignal<bool>,
     ) -> impl IntoView {
     match report {
         None => view! { <ResultLoading /> }.into_any(),
         Some(result) => match result {
-            Ok(report) => view! { <ResultLoaded report=report /> }.into_any(),
+            Ok(report) => view! { <ResultLoaded report=report viewer_sig=viewer_sig/> }.into_any(),
             Err(apierr) => match apierr {
                 APIErr::Decode => view! { <ResultDecodeErr /> }.into_any(),
                 APIErr::Network => view! { <ResultNetErr / > }.into_any(),
@@ -144,21 +155,28 @@ fn ReportDisplay(
     // TODO docs said this is bad?
 }
 
+#[component]
+fn LogViewer(content: String) -> impl IntoView {
+    view! {
+        <pre>{content}</pre>
+    }
+}
 
 #[component]
 fn App() -> impl IntoView {
-    let (count, set_count) = signal(0);
-    let async_data = LocalResource::new(move || { count.get(); get_report_result("http://localhost:8081/foo.json".to_string()) } );
+    let (report_r, report_w) = signal(());
+    let (viewer_sig, set_viewer_sig) = signal(false);
+    let report = LocalResource::new(move || { report_r.get(); get_report_result("http://localhost:8081/foo.json".to_string()) } );
 
     view! {
-        <button
-            on:click=move |_| *set_count.write() += 3
-        >
-            "Click me: "
-            {count}
+        <button on:click=move |_| { report_w.write(); } >
+            "Click me"
         </button>
         
-        { move || view! { <ReportDisplay report=async_data.get() /> } }
+        { move || view! { <ReportDisplay report=report.get() viewer_sig=set_viewer_sig /> } }
+
+        <p> {viewer_sig} </p>
+        { move || view! { <LogViewer content=viewer_sig.get().to_string() /> } }
     }
 }
 

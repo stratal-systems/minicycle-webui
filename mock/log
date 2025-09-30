@@ -1,0 +1,352 @@
+
+
+[0] maybetree @ mistilteinn: ~/proj/minicycle-webui
+>>> python -m http.server dist/
+usage: server.py [-h] [--cgi] [-b ADDRESS] [-d DIRECTORY] [-p VERSION] [port]
+server.py: error: argument port: invalid int value: 'dist/'
+
+[2] maybetree @ mistilteinn: ~/proj/minicycle-webui
+>>> python -m http.server -d dist/
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+127.0.0.1 - - [30/Sep/2025 20:21:14] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:21:14] "GET /minicycle-webui-57588df230d8ce38.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:21:14] "GET /minicycle-webui-57588df230d8ce38_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:21:14] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:21:14] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:21:31] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:21:31] "GET /minicycle-webui-57588df230d8ce38.js HTTP/1.
+1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:21:31] "GET /minicycle-webui-57588df230d8ce38_bg.wasm HT
+TP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:21:32] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:21:33] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:21:35] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:21:35] "GET /minicycle-webui-57588df230d8ce38.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:21:35] "GET /minicycle-webui-57588df230d8ce38_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:21:35] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:21:35] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:22:26] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:22:26] "GET /minicycle-webui-57588df230d8ce38.js HTTP/1.
+1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:22:26] "GET /minicycle-webui-57588df230d8ce38_bg.wasm HT
+TP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:25:17] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:25:17] "GET /minicycle-webui-57588df230d8ce38.js HTTP/1.
+1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:25:17] "GET /minicycle-webui-57588df230d8ce38_bg.wasm HT
+TP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 20:27:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:27:07] "GET /minicycle-webui-658d2642bdd84f66.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:27:07] "GET /minicycle-webui-658d2642bdd84f66_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:27:07] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:27:07] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:28:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:28:05] "GET /minicycle-webui-23a1d1dda7f38f2f.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:28:05] "GET /minicycle-webui-23a1d1dda7f38f2f_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:28:05] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:28:05] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:31:51] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:31:51] "GET /minicycle-webui-b8e7702f7d145da4.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:31:51] "GET /minicycle-webui-b8e7702f7d145da4_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:31:51] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:31:51] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:35:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:35:32] "GET /minicycle-webui-4281d844a5128c7f.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:35:32] "GET /minicycle-webui-4281d844a5128c7f_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:35:32] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:35:32] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:42:11] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:11] "GET /minicycle-webui-75971748c1b29762.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:11] "GET /minicycle-webui-75971748c1b29762_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:11] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:42:11] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:42:13] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:13] "GET /minicycle-webui-75971748c1b29762.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:13] "GET /minicycle-webui-75971748c1b29762_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:13] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:42:13] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:42:13] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:13] "GET /minicycle-webui-75971748c1b29762.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:13] "GET /minicycle-webui-75971748c1b29762_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:13] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:42:13] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:42:14] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:14] "GET /minicycle-webui-75971748c1b29762.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:14] "GET /minicycle-webui-75971748c1b29762_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:14] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:42:14] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:42:53] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:53] "GET /minicycle-webui-c3a450a311de8fcb.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:53] "GET /minicycle-webui-c3a450a311de8fcb_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:42:53] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:42:53] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:43:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:43:05] "GET /minicycle-webui-c3a450a311de8fcb.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:43:05] "GET /minicycle-webui-c3a450a311de8fcb_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:43:05] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:43:05] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:44:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:44:00] "GET /minicycle-webui-9f154bc6df54fc01.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:44:00] "GET /minicycle-webui-9f154bc6df54fc01_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:44:00] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:44:00] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:54:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:54:38] "GET /minicycle-webui-64f3d846cea76202.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:54:38] "GET /minicycle-webui-64f3d846cea76202_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:54:38] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:54:38] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:59:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:56] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:56] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:56] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:59:56] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:59:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:57] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:57] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:57] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:59:57] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:59:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:58] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:58] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:58] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:59:58] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 20:59:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:59] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:59] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 20:59:59] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 20:59:59] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:00:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:00] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:00] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:00] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:00:00] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:00:11] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:11] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:11] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:11] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:00:11] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:00:12] "GET / HTTP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 21:00:12] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 304 -
+127.0.0.1 - - [30/Sep/2025 21:00:12] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 304 -
+127.0.0.1 - - [30/Sep/2025 21:00:17] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:00:17] "GET /.well-known/appspecific/com.chrome.devtools
+.json HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:00:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:59] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:59] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:00:59] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:00:59] "GET /.well-known/appspecific/com.chrome.devtools
+.json HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:01:06] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:06] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:06] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:06] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:01:06] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:01:11] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:11] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:11] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:11] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:01:11] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:01:14] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:14] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:14] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:14] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:01:14] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:01:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:17] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:17] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:01:17] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:01:17] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:02:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:56] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:56] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:56] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:02:56] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:02:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:57] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:57] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:58] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:02:58] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:02:58] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:58] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:58] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:58] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:02:58] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:02:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:59] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:59] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:02:59] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:02:59] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:04:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:07] "GET /minicycle-webui-cb38eb0be76b24ba.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:07] "GET /minicycle-webui-cb38eb0be76b24ba_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:07] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:04:07] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:04:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:08] "GET /minicycle-webui-cb38eb0be76b24ba.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:08] "GET /minicycle-webui-cb38eb0be76b24ba_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:08] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:04:08] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:04:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:09] "GET /minicycle-webui-cb38eb0be76b24ba.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:09] "GET /minicycle-webui-cb38eb0be76b24ba_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:09] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:04:09] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:04:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:09] "GET /minicycle-webui-cb38eb0be76b24ba.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:09] "GET /minicycle-webui-cb38eb0be76b24ba_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:09] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:04:09] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:04:10] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:10] "GET /minicycle-webui-cb38eb0be76b24ba.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:10] "GET /minicycle-webui-cb38eb0be76b24ba_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:04:10] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:04:10] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:05:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:05:55] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:05:55] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:05:55] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:05:55] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:06:18] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:06:18] "GET /minicycle-webui-c2ffba0b73c5037a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:06:18] "GET /minicycle-webui-c2ffba0b73c5037a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:06:18] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:06:18] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:07:44] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:07:44] "GET /minicycle-webui-9f04903b6a4bfa2a.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:07:44] "GET /minicycle-webui-9f04903b6a4bfa2a_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:07:44] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:07:44] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:14:49] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:14:49] "GET /minicycle-webui-332b2dcbf2b7ff61.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:14:49] "GET /minicycle-webui-332b2dcbf2b7ff61_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:14:49] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:14:49] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:24:36] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:24:36] "GET /minicycle-webui-c05541587ed074d2.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:24:36] "GET /minicycle-webui-c05541587ed074d2_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:24:36] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:24:36] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:29:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:29:37] "GET /minicycle-webui-e4607052ef1aaa80.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:29:37] "GET /minicycle-webui-e4607052ef1aaa80_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:29:37] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:29:37] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:30:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:30:52] "GET /minicycle-webui-e4607052ef1aaa80.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:30:52] "GET /minicycle-webui-e4607052ef1aaa80_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:30:52] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:30:52] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:39:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:39:32] "GET /minicycle-webui-f9a12704b73b5f9f.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:39:32] "GET /minicycle-webui-f9a12704b73b5f9f_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:39:32] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:39:32] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:39:34] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:39:34] "GET /minicycle-webui-f9a12704b73b5f9f.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:39:34] "GET /minicycle-webui-f9a12704b73b5f9f_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:39:34] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:39:34] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:40:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:40:32] "GET /minicycle-webui-5f83832b1b249e2d.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:40:32] "GET /minicycle-webui-5f83832b1b249e2d_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:40:32] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:40:32] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [30/Sep/2025 21:41:42] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:41:43] "GET /minicycle-webui-e4607052ef1aaa80.js HTTP/1.
+1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:41:43] "GET /minicycle-webui-e4607052ef1aaa80_bg.wasm HT
+TP/1.1" 200 -
+127.0.0.1 - - [30/Sep/2025 21:41:43] code 404, message File not found
+127.0.0.1 - - [30/Sep/2025 21:41:43] "GET /favicon.ico HTTP/1.1" 404 -
+
