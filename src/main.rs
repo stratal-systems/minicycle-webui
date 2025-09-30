@@ -6,6 +6,9 @@ use log::Level;
 use leptos::logging::{log, warn, error};
 use gloo_net::http::Request;
 use gloo_timers::future::TimeoutFuture;
+use std::time::SystemTime;
+use std::time::Duration;
+use std::fmt::Debug;
 
 mod schema;
 use crate::schema::v1::Report;
@@ -68,15 +71,74 @@ pub async fn get_report_result(url: String) -> Result<Report, APIErr> {
 }
 
 #[component]
-fn ResultDisplay(
+fn ResultLoading() -> impl IntoView {
+    view! {
+        <p> "Loading..." </p>
+    }
+}
+
+#[component]
+fn ResultDecodeErr() -> impl IntoView {
+    view! {
+        <p> "Decode error" </p>
+    }
+}
+
+#[component]
+fn ResultNetErr() -> impl IntoView {
+    view! {
+        <p> "Network error" </p>
+    }
+}
+
+#[component]
+fn ResultLoaded(report: Report) -> impl IntoView {
+    view! {
+        <ul>
+            <li> "Started: " <VersatileTime unixtime=report.start.time /> </li>
+            <li> "Finished: " { match report.finish {
+                Some(finish) => view!{ <VersatileTime unixtime=finish.time /> }.into_any(),
+                None => view!{ "in progress... " }.into_any(),
+                }
+            } </li>
+            <li> "Commit message: " { report.message } </li>
+            <li> "Commit ref: " { report.r#ref } </li>
+        </ul>
+    }
+}
+
+#[component]
+fn VersatileTime(unixtime: u64) -> impl IntoView {
+
+    let systime = SystemTime::UNIX_EPOCH + Duration::from_secs(unixtime);
+    let humantime = chrono_humanize::HumanTime::from(systime);
+    // TODO better to use to_string that format?
+    let dt: chrono::DateTime<chrono::Local> = systime.into();
+    // TODO will this use browser's Local tz??
+    // Do need to bridge to js manually?
+    let isotime = dt.format("%+");
+    // TODO better to use to_rfc3339?
+
+    view! {
+        <span> { format!("{}", humantime) } </span>
+        <span> { format!("{}", unixtime) } </span>
+        <span> { format!("{}", isotime) } </span>
+    }
+}
+
+#[component]
+fn ReportDisplay(
     #[prop(into)]
-    result: Result<Report, APIErr>
+    report: Option<Result<Report, APIErr>>
     ) -> impl IntoView {
-    match result {
-        Ok(report) => view! { <p> {format!("{:#?}", report)} </p> }.into_any(),
-        Err(apierr) => match apierr {
-            APIErr::Decode => view! { <p> "Decode error" </p> }.into_any(),
-            APIErr::Network => view! { <p> "Network error" </p> }.into_any(),
+    match report {
+        None => view! { <ResultLoading /> }.into_any(),
+        Some(result) => match result {
+            Ok(report) => view! { <ResultLoaded report=report /> }.into_any(),
+            Err(apierr) => match apierr {
+                APIErr::Decode => view! { <ResultDecodeErr /> }.into_any(),
+                APIErr::Network => view! { <ResultNetErr / > }.into_any(),
+            }
         }
     }
     // TODO docs said this is bad?
@@ -96,10 +158,7 @@ fn App() -> impl IntoView {
             {count}
         </button>
         
-        {move || match async_data.get() {
-            None => view! { <p> "Loading" </p> }.into_any(),
-            Some(val) => view! { <ResultDisplay result=val /> }.into_any()
-        }}
+        { move || view! { <ReportDisplay report=async_data.get() /> } }
     }
 }
 
