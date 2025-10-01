@@ -1,0 +1,74 @@
+:root {
+  // not supported yet in FF but whatever
+  // interpolate-size: allow-keywords;
+}
+
+@keyframes z-index-fix {
+  0%, 100% { z-index: 1; }
+}
+
+.versatime {
+  position: relative;
+  display: inline;
+  height: 1rem;
+  width: fit-content;
+
+  & > .wrap > .unix::before {
+    content: "Timestamp: ";
+  }
+
+  & > .wrap > .iso::before {
+    content: "ISO8601: ";
+  }
+
+  & > .wrap {
+
+    position: absolute;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    overflow: hidden;
+    height: fit-content;
+
+    gap: 5px;
+    white-space: nowrap;
+
+    background-color: Canvas;
+
+    & { box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.0); }
+    &:hover { box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.8); }
+
+    & > div { max-width: 0px; }
+    & { max-height: 1.2rem; }
+    &:hover { max-height: 8rem; }
+
+    //& > div { opacity: 0.0; }
+    //& > .human { opacity: 1.0; }
+    //&:hover > div{ opacity: 1.0; }
+
+    & > .human { max-width: 40ch; }
+    &:hover > div{ max-width: 40ch; }
+
+    //& > div { max-height: 0rem; }
+    //&:hover > div{ max-height: 1rem; }
+
+    & { padding: 0px 5px 0px 5px; }
+    &:hover { padding: 10px 10px 10px 10px; }
+
+    & { transform: translate(0px, 0px); }
+    &:hover { transform: translate(-5px, -10px); }
+
+    &:hover { z-index: 999; }
+
+    & > div { transition: max-width 0.5s ease, opacity 0.2s ease; }
+    transition: max-height 0.5s ease, box-shadow 0.2s ease-in, padding 0.2s ease, transform 0.2s ease;
+
+    & { animation: z-index-fix 0.5s ease; }
+    &:hover { animation: none; }
+
+    & > * {
+    }
+
+  }
+}
+

@@ -99,9 +99,9 @@ fn ResultLoaded(
     ) -> impl IntoView {
     view! {
         <ul>
-            <li> "Started: " <VersatileTime unixtime=report.start.time /> </li>
+            <li> "Started: " <VersaTime unixtime=report.start.time /> </li>
             <li> "Finished: " { match report.finish {
-                Some(finish) => view!{ <VersatileTime unixtime=finish.time /> }.into_any(),
+                Some(finish) => view!{ <VersaTime unixtime=finish.time /> }.into_any(),
                 None => view!{ "in progress... " }.into_any(),
                 }
             } </li>
@@ -117,7 +117,7 @@ fn ResultLoaded(
 }
 
 #[component]
-fn VersatileTime(unixtime: u64) -> impl IntoView {
+fn VersaTime(unixtime: u64) -> impl IntoView {
 
     let systime = SystemTime::UNIX_EPOCH + Duration::from_secs(unixtime);
     let humantime = chrono_humanize::HumanTime::from(systime);
@@ -129,9 +129,13 @@ fn VersatileTime(unixtime: u64) -> impl IntoView {
     // TODO better to use to_rfc3339?
 
     view! {
-        <span> { format!("{}", humantime) } </span>
-        <span> { format!("{}", unixtime) } </span>
-        <span> { format!("{}", isotime) } </span>
+        <div class="versatime">
+            <div class="wrap">
+                <div class="human"> <div class="wrap"> { format!("{}", humantime) } </div> </div>
+                <div class="unix"> <div class="wrap"> { format!("{}", unixtime) } </div></div>
+                <div class="iso"> <div class="wrap"> { format!("{}", isotime) } </div></div>
+            </div>
+        </div>
     }
 }
 
