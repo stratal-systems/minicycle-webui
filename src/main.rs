@@ -52,20 +52,31 @@ async fn get_data(_: ()) -> String {
 
 #[derive(Clone)]
 pub enum APIErr {
-    Decode,
-    Network
+    Network(String),
+    Decode(String),
 }
 
-pub async fn get_report_result(url: String) -> Result<Report, APIErr> {
+impl std::fmt::Display for APIErr {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            APIErr::Network(msg) => write!(f, "{}", msg),
+            APIErr::Decode(msg) => write!(f, "{}", msg),
+        }
+    }
+}
+
+pub async fn generic_get<T>(url: String) -> Result<T, APIErr>
+where T: Clone + Debug + serde::de::DeserializeOwned + serde::Serialize
+{
     match Request::get(&url)
         .send()
         .await
         {
-            Ok(response) => match response.json::<Report>().await {
+            Ok(response) => match response.json::<T>().await {
                 Ok(parsed) => Ok(parsed),
-                Err(err) => Err(APIErr::Decode),
+                Err(err) => Err(APIErr::Decode(err.to_string())),
             },
-            Err(err) => Err(APIErr::Network),
+            Err(err) => Err(APIErr::Network(err.to_string())),
     }
     // TODO use map_err
 }
@@ -78,16 +89,13 @@ fn ResultLoading() -> impl IntoView {
 }
 
 #[component]
-fn ResultDecodeErr() -> impl IntoView {
+fn ErrorDisplay(error: APIErr) -> impl IntoView {
     view! {
-        <p> "Decode error" </p>
-    }
-}
-
-#[component]
-fn ResultNetErr() -> impl IntoView {
-    view! {
-        <p> "Network error" </p>
+        <b> { match error {
+            APIErr::Network(_) => "Network err",
+            APIErr::Decode(_) => "Decode err",
+        } } </b>
+        <p> { error.to_string() } </p>
     }
 }
 
@@ -150,10 +158,13 @@ fn ReportDisplay(
         None => view! { <ResultLoading /> }.into_any(),
         Some(result) => match result {
             Ok(report) => view! { <ResultLoaded report=report viewer_sig=viewer_sig/> }.into_any(),
-            Err(apierr) => match apierr {
-                APIErr::Decode => view! { <ResultDecodeErr /> }.into_any(),
-                APIErr::Network => view! { <ResultNetErr / > }.into_any(),
-            }
+            Err(err) => view! { <ErrorDisplay error=err /> }.into_any(),
+            //Err(_) => view! { "whoops" }.into_any(),
+            //Err(err) => view! { { err.what } }.into_any(),
+            //Err(apierr) => match apierr {
+            //    APIErr::Decode(err) => view! { <ResultDecodeErr /> }.into_any(),
+            //    APIErr::Network(err) => view! { <ResultNetErr / > }.into_any(),
+            //}
         }
     }
     // TODO docs said this is bad?
@@ -170,7 +181,8 @@ fn LogViewer(content: String) -> impl IntoView {
 fn App() -> impl IntoView {
     let (report_r, report_w) = signal(());
     let (viewer_sig, set_viewer_sig) = signal(false);
-    let report = LocalResource::new(move || { report_r.get(); get_report_result("http://localhost:8081/foo.json".to_string()) } );
+    //let report = LocalResource::new(move || { report_r.get(); get_report_result("http://localhost:8081/foo.json".to_string()) } );
+    let report = LocalResource::new(move || { report_r.get(); generic_get("http://localhost:8081/foo.json".to_string()) } );
 
     view! {
         <button on:click=move |_| { report_w.write(); } >
