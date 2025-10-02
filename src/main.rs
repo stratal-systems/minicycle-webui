@@ -65,7 +65,7 @@ impl std::fmt::Display for APIErr {
     }
 }
 
-pub async fn generic_get<T>(url: String) -> Result<T, APIErr>
+pub async fn get_json<T>(url: String) -> Result<T, APIErr>
 where T: Clone + Debug + serde::de::DeserializeOwned + serde::Serialize
 {
     match Request::get(&url)
@@ -78,7 +78,20 @@ where T: Clone + Debug + serde::de::DeserializeOwned + serde::Serialize
             },
             Err(err) => Err(APIErr::Network(err.to_string())),
     }
-    // TODO use map_err
+}
+
+pub async fn get_string(url: String) -> Result<String, APIErr>
+{
+    match Request::get(&url)
+        .send()
+        .await
+        {
+            Ok(response) => match response.text().await {
+                Ok(parsed) => Ok(parsed),
+                Err(err) => Err(APIErr::Decode(err.to_string())),
+            },
+            Err(err) => Err(APIErr::Network(err.to_string())),
+    }
 }
 
 #[component]
@@ -104,19 +117,35 @@ fn ResultLoaded(
         report: Report,
         #[prop(into)]
         viewer_sig: WriteSignal<bool>,
+        #[prop(into)]
+        log_sig: WriteSignal<()>,
     ) -> impl IntoView {
+    // TODO double match on report.finish? Is this ok?
     view! {
         <ul>
+            <li> "Status: " { match report.finish {
+                Some(ref finish) => if finish.ok {
+                    view!{ <code>"OK"</code> }.into_any()
+                    } else {
+                    view!{ <code>"ERR"</code> }.into_any()
+                },
+                None => view!{ "in progress... " }.into_any(),
+                }
+            } </li>
             <li> "Started: " <VersaTime unixtime=report.start.time /> </li>
-            <li> "Finished: " { match report.finish {
-                Some(finish) => view!{ <VersaTime unixtime=finish.time /> }.into_any(),
+            <li> "Run time: " { match report.finish {
+                Some(ref finish) => view!{
+                    // TODO generally fix all of these dangerous weird
+                    // i64 u64 casts
+                    <VersaTimeDelta seconds=finish.time as i64 - report.start.time as i64/>
+                }.into_any(),
                 None => view!{ "in progress... " }.into_any(),
                 }
             } </li>
             <li> "Commit message: " { report.message } </li>
             <li> "Commit ref: " { report.r#ref } </li>
             <li> "Artifact ID: " { report.artifacts } </li>
-            <button on:click = move |_| { viewer_sig.set(true); }>
+            <button on:click = move |_| { viewer_sig.set(true); log_sig.write(); }>
                 "foo "
             </button>
 
@@ -148,16 +177,40 @@ fn VersaTime(unixtime: u64) -> impl IntoView {
 }
 
 #[component]
+fn VersaTimeDelta(seconds: i64) -> impl IntoView {
+
+    let systime = chrono::Duration::seconds(seconds);
+    let humantime = chrono_humanize::HumanTime::from(systime);
+    // TODO better to use to_rfc3339?
+
+    view! {
+        <div class="versatimedelta">
+            <div class="wrap">
+                <div class="human"> <div class="wrap"> {
+                    humantime.to_text_en(
+                        chrono_humanize::Accuracy::Precise,
+                        chrono_humanize::Tense::Present,
+                    )
+                } </div> </div>
+                <div class="seconds"> <div class="wrap"> { format!("{}", seconds) } </div></div>
+            </div>
+        </div>
+    }
+}
+
+#[component]
 fn ReportDisplay(
     #[prop(into)]
     report: Option<Result<Report, APIErr>>,
     #[prop(into)]
     viewer_sig: WriteSignal<bool>,
+    #[prop(into)]
+    log_sig: WriteSignal<()>,
     ) -> impl IntoView {
     match report {
         None => view! { <ResultLoading /> }.into_any(),
         Some(result) => match result {
-            Ok(report) => view! { <ResultLoaded report=report viewer_sig=viewer_sig/> }.into_any(),
+            Ok(report) => view! { <ResultLoaded report=report viewer_sig=viewer_sig log_sig=log_sig /> }.into_any(),
             Err(err) => view! { <ErrorDisplay error=err /> }.into_any(),
             //Err(_) => view! { "whoops" }.into_any(),
             //Err(err) => view! { { err.what } }.into_any(),
@@ -171,28 +224,34 @@ fn ReportDisplay(
 }
 
 #[component]
-fn LogViewer(content: String) -> impl IntoView {
-    view! {
-        <pre>{content}</pre>
+fn LogViewer(content: Option<Result<String, APIErr>>) -> impl IntoView {
+    match content {
+        None => view! { "Loading..." }.into_any(),
+        Some(what) => match what {
+            Ok(string) => view! { <pre>{string}</pre> }.into_any(),
+            Err(err) => view! { <ErrorDisplay error=err /> }.into_any(),
+        },
     }
 }
 
 #[component]
 fn App() -> impl IntoView {
     let (report_r, report_w) = signal(());
+    let (log_r, log_w) = signal(());
     let (viewer_sig, set_viewer_sig) = signal(false);
     //let report = LocalResource::new(move || { report_r.get(); get_report_result("http://localhost:8081/foo.json".to_string()) } );
-    let report = LocalResource::new(move || { report_r.get(); generic_get("http://localhost:8081/foo.json".to_string()) } );
+    let report = LocalResource::new(move || { report_r.get(); get_json("http://localhost:8081/foo.json".to_string()) } );
+    let log = LocalResource::new(move || { log_r.get(); get_string("http://localhost:8081/log".to_string()) } );
 
     view! {
         <button on:click=move |_| { report_w.write(); } >
             "Click me"
         </button>
         
-        { move || view! { <ReportDisplay report=report.get() viewer_sig=set_viewer_sig /> } }
+        { move || view! { <ReportDisplay report=report.get() viewer_sig=set_viewer_sig log_sig=log_w /> } }
 
         <p> {viewer_sig} </p>
-        { move || view! { <LogViewer content=viewer_sig.get().to_string() /> } }
+        { move || view! { <LogViewer content=log.get() /> } }
     }
 }
 

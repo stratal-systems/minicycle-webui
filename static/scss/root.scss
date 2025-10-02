@@ -7,19 +7,11 @@
   0%, 100% { z-index: 1; }
 }
 
-.versatime {
+@mixin flexpand($default) {
   position: relative;
   display: inline;
   height: 1rem;
   width: fit-content;
-
-  & > .wrap > .unix::before {
-    content: "Timestamp: ";
-  }
-
-  & > .wrap > .iso::before {
-    content: "ISO8601: ";
-  }
 
   & > .wrap {
 
@@ -43,10 +35,10 @@
     &:hover { max-height: 8rem; }
 
     //& > div { opacity: 0.0; }
-    //& > .human { opacity: 1.0; }
+    //& > .$default { opacity: 1.0; }
     //&:hover > div{ opacity: 1.0; }
 
-    & > .human { max-width: 40ch; }
+    & > #{$default} { max-width: 40ch; }
     &:hover > div{ max-width: 40ch; }
 
     //& > div { max-height: 0rem; }
@@ -68,7 +60,28 @@
 
     & > * {
     }
+  }
+}
 
+.versatime {
+  @include flexpand(".human");
+
+  & > .wrap > .unix::before {
+    content: "Timestamp: ";
+  }
+
+  & > .wrap > .iso::before {
+    content: "ISO8601: ";
+  }
+
+}
+
+
+.versatimedelta {
+  @include flexpand(".human");
+
+  & > .wrap > .seconds::before {
+    content: "Seconds: ";
   }
 }
 
