@@ -249,6 +249,22 @@ fn App() -> impl IntoView {
         }
 
         { move || view! { <LogViewer content=log.get() /> } }
+
+        <hr />
+        <p>
+            "I am "
+            { env!("CARGO_PKG_NAME") }
+            "version "
+            { env!("CARGO_PKG_VERSION") }
+            " licensed under "
+            { env!("CARGO_PKG_LICENSE") }
+            ". "
+            "Get my source code at "
+            <a href={ env!("CARGO_PKG_REPOSITORY") }>
+                { env!("CARGO_PKG_REPOSITORY") }
+            </a>
+            ". "
+        </p>
     }
 }
 
