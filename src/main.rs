@@ -68,6 +68,7 @@ impl std::fmt::Display for APIErr {
 pub async fn get_json<T>(url: String) -> Result<T, APIErr>
 where T: Clone + Debug + serde::de::DeserializeOwned + serde::Serialize
 {
+    TimeoutFuture::new(1000).await;
     match Request::get(&url)
         .send()
         .await
@@ -240,15 +241,35 @@ fn App() -> impl IntoView {
     let (log_r, log_w) = signal(());
     let (viewer_sig, set_viewer_sig) = signal(false);
     //let report = LocalResource::new(move || { report_r.get(); get_report_result("http://localhost:8081/foo.json".to_string()) } );
-    let report = LocalResource::new(move || { report_r.get(); get_json("http://localhost:8081/foo.json".to_string()) } );
+    
+    //let report = LocalResource::new(move || { report_r.get(); get_json("http://localhost:8081/foo.json".to_string()) } );
+    let report = Action::new(|_:&()| {
+        async move {
+            Err(APIErr::Network("foo".to_string()))
+            //get_json::<Report>("http://localhost:8081/foo.json".to_string()).await
+        }
+    });
+
     let log = LocalResource::new(move || { log_r.get(); get_string("http://localhost:8081/log".to_string()) } );
 
+
+
     view! {
-        <button on:click=move |_| { report_w.write(); } >
+        <button on:click=move |_| {
+            // change back to "loading..." animation
+            // while resouce is loading
+            //report.set(None);
+            //report_w.write();
+            report.dispatch(());
+        } >
             "Click me"
         </button>
         
-        { move || view! { <ReportDisplay report=report.get() viewer_sig=set_viewer_sig log_sig=log_w /> } }
+        { 
+            move || view! {
+                <ReportDisplay report=report.value().get() viewer_sig=set_viewer_sig log_sig=log_w />
+            }
+        }
 
         <p> {viewer_sig} </p>
         { move || view! { <LogViewer content=log.get() /> } }
