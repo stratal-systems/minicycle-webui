@@ -56,6 +56,12 @@ pub enum APIErr {
     Decode(String),
 }
 
+#[derive(Clone)]
+pub enum LazyLoad<T> {
+    Present(T),
+    Absent(String),
+}
+
 impl std::fmt::Display for APIErr {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -237,19 +243,17 @@ fn LogViewer(content: Option<Result<String, APIErr>>) -> impl IntoView {
 
 #[component]
 fn App() -> impl IntoView {
-    let (report_r, report_w) = signal(());
+    let (report_r, report_w) = signal(false);
     let (log_r, log_w) = signal(());
     let (viewer_sig, set_viewer_sig) = signal(false);
     //let report = LocalResource::new(move || { report_r.get(); get_report_result("http://localhost:8081/foo.json".to_string()) } );
-    
-    //let report = LocalResource::new(move || { report_r.get(); get_json("http://localhost:8081/foo.json".to_string()) } );
-    let report = Action::new(|_:&()| {
-        async move {
-            Err(APIErr::Network("foo".to_string()))
-            //get_json::<Report>("http://localhost:8081/foo.json".to_string()).await
+    let report = LocalResource::new(move || {
+        if report_r.get() {
+            LazyLoad::Present(get_json("http://localhost:8081/foo.json".to_string()))
+        } else {
+            LazyLoad::Absent("foo".to_string())
         }
-    });
-
+    } );
     let log = LocalResource::new(move || { log_r.get(); get_string("http://localhost:8081/log".to_string()) } );
 
 
@@ -258,16 +262,15 @@ fn App() -> impl IntoView {
         <button on:click=move |_| {
             // change back to "loading..." animation
             // while resouce is loading
-            //report.set(None);
-            //report_w.write();
-            report.dispatch(());
+            report.set(None);
+            report_w.write();
         } >
             "Click me"
         </button>
         
         { 
             move || view! {
-                <ReportDisplay report=report.value().get() viewer_sig=set_viewer_sig log_sig=log_w />
+                <ReportDisplay report=report.get() viewer_sig=set_viewer_sig log_sig=log_w />
             }
         }
 
