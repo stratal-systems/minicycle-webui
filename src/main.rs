@@ -87,11 +87,11 @@ fn ResultLoading() -> impl IntoView {
 fn ErrorDisplay(error: APIErr) -> impl IntoView {
     view! {
         <b> { match error {
-            APIErr::Network(_) => "Network err",
-            APIErr::Decode(_) => "Decode err",
-            APIErr::Lazy(_) => "Not yet loaded",
+            APIErr::Network(ref msg) => format!("Network err: {}", msg),
+            APIErr::Decode(ref msg) => format!("Decode err: {}", msg),
+            APIErr::Lazy(_) => "...".to_string(),
         } } </b>
-        <p> { error.to_string() } </p>
+        //<p> { error.to_string() } </p>
     }
 }
 
@@ -128,9 +128,9 @@ fn ResultLoaded(
             <li> "Commit message: " { report.message } </li>
             <li> "Commit ref: " { report.r#ref } </li>
             <li> "Artifact ID: " { report.artifacts } </li>
-            <button on:click = move |_| { viewer_sig.set(true); log_sig.set(true); }>
-                "foo "
-            </button>
+            <a href="#" on:click = move |_| { viewer_sig.set(true); log_sig.set(true); }>
+                "View"
+            </a>
 
         </ul>
     }
@@ -239,7 +239,7 @@ fn App() -> impl IntoView {
             report.set(None);
             report_w.set(true);
         } >
-            "Click me"
+            "Click to load latest report"
         </button>
         
         { 
@@ -248,7 +248,6 @@ fn App() -> impl IntoView {
             }
         }
 
-        <p> {viewer_sig} </p>
         { move || view! { <LogViewer content=log.get() /> } }
     }
 }
