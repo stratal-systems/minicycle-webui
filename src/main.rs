@@ -19,47 +19,11 @@ fn main() {
     mount_to_body(|| view! { <App/> });
 }
 
-async fn get_data(_: ()) -> String {
-    match Request::get("https://mitakihara.webhook.stratal.systems/report-latest")
-        .send()
-        .await
-
-        {
-            Ok(response) => match response.json::<Report>().await {
-                Ok(parsed) => format!("Parsed: {:#?}!", parsed).to_string(),
-                Err(err) => format!("Parse err: {:#?}!", err).to_string(),
-                //Err(err) => match response.text().await {
-                //    Ok(text) => format!("Parse err: {:#?}", text).to_string(),
-                //    Err(err) => format!("Parse text err: {:#?}", err).to_string(),
-                //},
-            },
-            Err(err) => "network error!".to_string(),
-        }
-}
-
-//#[component]
-//pub fn ReportResult(status: LocalResource<i32>) -> impl IntoView {
-//    match status.get() {
-//        Some(status) => match status {
-//            0 => view! { <span style="color:red;">"Foo!"</span> },
-//            1 => view! { <span style="color:blue;">"Bar!"</span> },
-//            _ => view! { <span style="color:green;">"Baz!"</span> },
-//            },
-//        None => view! { <span style="color:gray;">"Loading...."</span> },
-//    }
-//}
-//
-
 #[derive(Clone)]
 pub enum APIErr {
     Network(String),
     Decode(String),
-}
-
-#[derive(Clone)]
-pub enum LazyLoad<T> {
-    Present(T),
-    Absent(String),
+    Lazy(String),
 }
 
 impl std::fmt::Display for APIErr {
@@ -67,37 +31,48 @@ impl std::fmt::Display for APIErr {
         match self {
             APIErr::Network(msg) => write!(f, "{}", msg),
             APIErr::Decode(msg) => write!(f, "{}", msg),
+            APIErr::Lazy(msg) => write!(f, "{}", msg),
         }
     }
 }
 
-pub async fn get_json<T>(url: String) -> Result<T, APIErr>
+
+#[derive(Clone)]
+pub enum LazyLoad<T> {
+    Present(T),
+    Absent(String),
+}
+
+pub async fn get_json<T>(do_it: bool, url: String) -> Result<T, APIErr>
 where T: Clone + Debug + serde::de::DeserializeOwned + serde::Serialize
 {
-    TimeoutFuture::new(1000).await;
-    match Request::get(&url)
-        .send()
-        .await
-        {
+    if do_it {
+        TimeoutFuture::new(1000).await;
+        match Request::get(&url).send().await {
             Ok(response) => match response.json::<T>().await {
-                Ok(parsed) => Ok(parsed),
-                Err(err) => Err(APIErr::Decode(err.to_string())),
+                    Ok(parsed) => Ok(parsed),
+                    Err(err) => Err(APIErr::Decode(err.to_string())),
             },
             Err(err) => Err(APIErr::Network(err.to_string())),
+        }
+    } else {
+        Err(APIErr::Lazy("Not yet loaded".to_string()))
     }
 }
 
-pub async fn get_string(url: String) -> Result<String, APIErr>
+pub async fn get_string(do_it: bool, url: String) -> Result<String, APIErr>
 {
-    match Request::get(&url)
-        .send()
-        .await
-        {
+    if do_it {
+        TimeoutFuture::new(1000).await;
+        match Request::get(&url).send().await {
             Ok(response) => match response.text().await {
-                Ok(parsed) => Ok(parsed),
-                Err(err) => Err(APIErr::Decode(err.to_string())),
+                    Ok(parsed) => Ok(parsed),
+                    Err(err) => Err(APIErr::Decode(err.to_string())),
             },
             Err(err) => Err(APIErr::Network(err.to_string())),
+        }
+    } else {
+        Err(APIErr::Lazy("Not yet loaded".to_string()))
     }
 }
 
@@ -114,6 +89,7 @@ fn ErrorDisplay(error: APIErr) -> impl IntoView {
         <b> { match error {
             APIErr::Network(_) => "Network err",
             APIErr::Decode(_) => "Decode err",
+            APIErr::Lazy(_) => "Not yet loaded",
         } } </b>
         <p> { error.to_string() } </p>
     }
@@ -125,7 +101,7 @@ fn ResultLoaded(
         #[prop(into)]
         viewer_sig: WriteSignal<bool>,
         #[prop(into)]
-        log_sig: WriteSignal<()>,
+        log_sig: WriteSignal<bool>,
     ) -> impl IntoView {
     // TODO double match on report.finish? Is this ok?
     view! {
@@ -152,7 +128,7 @@ fn ResultLoaded(
             <li> "Commit message: " { report.message } </li>
             <li> "Commit ref: " { report.r#ref } </li>
             <li> "Artifact ID: " { report.artifacts } </li>
-            <button on:click = move |_| { viewer_sig.set(true); log_sig.write(); }>
+            <button on:click = move |_| { viewer_sig.set(true); log_sig.set(true); }>
                 "foo "
             </button>
 
@@ -212,7 +188,7 @@ fn ReportDisplay(
     #[prop(into)]
     viewer_sig: WriteSignal<bool>,
     #[prop(into)]
-    log_sig: WriteSignal<()>,
+    log_sig: WriteSignal<bool>,
     ) -> impl IntoView {
     match report {
         None => view! { <ResultLoading /> }.into_any(),
@@ -244,17 +220,15 @@ fn LogViewer(content: Option<Result<String, APIErr>>) -> impl IntoView {
 #[component]
 fn App() -> impl IntoView {
     let (report_r, report_w) = signal(false);
-    let (log_r, log_w) = signal(());
+    let (log_r, log_w) = signal(false);
     let (viewer_sig, set_viewer_sig) = signal(false);
     //let report = LocalResource::new(move || { report_r.get(); get_report_result("http://localhost:8081/foo.json".to_string()) } );
     let report = LocalResource::new(move || {
-        if report_r.get() {
-            LazyLoad::Present(get_json("http://localhost:8081/foo.json".to_string()))
-        } else {
-            LazyLoad::Absent("foo".to_string())
-        }
+        get_json(report_r.get(), "http://localhost:8081/foo.json".to_string())
     } );
-    let log = LocalResource::new(move || { log_r.get(); get_string("http://localhost:8081/log".to_string()) } );
+    let log = LocalResource::new(move || { 
+        get_string(log_r.get(), "http://localhost:8081/log".to_string())
+    } );
 
 
 
@@ -263,7 +237,7 @@ fn App() -> impl IntoView {
             // change back to "loading..." animation
             // while resouce is loading
             report.set(None);
-            report_w.write();
+            report_w.set(true);
         } >
             "Click me"
         </button>

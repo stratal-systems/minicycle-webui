@@ -1,6 +1,7 @@
 
 
 [0] maybetree @ mistilteinn: ~/proj/minicycle-webui
+
 >>> python -m http.server dist/
 usage: server.py [-h] [--cgi] [-b ADDRESS] [-d DIRECTORY] [-p VERSION] [port]
 server.py: error: argument port: invalid int value: 'dist/'
